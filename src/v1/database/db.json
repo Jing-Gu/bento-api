@@ -1,0 +1,81 @@
+{
+  "recipes": [
+    {
+      "name": "Pancakes",
+      "ingredients": [
+        {
+          "name": "Flour",
+          "quantity": 1,
+          "unit": "cup"
+        },
+        {
+          "name": "Egg",
+          "quantity": 1
+        },
+        {
+          "name": "Milk",
+          "quantity": 1,
+          "unit": "cup"
+        }
+      ],
+      "instructions": [
+        "Mix ingredients",
+        "Cook on pan"
+      ]
+    },
+    {
+      "name": "Pasta",
+      "ingredients": [
+        {
+          "name": "Pasta",
+          "quantity": 1,
+          "unit": "cup"
+        },
+        {
+          "name": "Water",
+          "quantity": 4,
+          "unit": "cups"
+        }
+      ],
+      "instructions": [
+        "Boil water",
+        "Add pasta",
+        "Cook for 10 minutes"
+      ]
+    },
+    {
+      "name": "tasty baked fish",
+      "ingredients": [
+        "tomato",
+        "potato"
+      ],
+      "instructions": [
+        "wash",
+        "cook"
+      ],
+      "id": "fe81f347-eeaa-40cf-85c7-f72cf81b736d",
+      "createdAt": "7/13/2023, 5:44:59 PM",
+      "updatedAt": "7/15/2023, 1:52:53 AM"
+    },
+    {
+      "name": "steamed meat",
+      "instructions": [
+        "wash",
+        "cook"
+      ],
+      "id": "0c5800dc-3a24-4457-ac2d-d86f6d3030f4",
+      "createdAt": "7/15/2023, 1:06:50 AM",
+      "updatedAt": "7/15/2023, 1:06:50 AM"
+    },
+    {
+      "name": "Roasted pork",
+      "instructions": [
+        "wash",
+        "cook"
+      ],
+      "id": "1fef5801-95e5-4e16-98c0-467e1de68087",
+      "createdAt": "7/15/2023, 1:18:13 AM",
+      "updatedAt": "7/15/2023, 1:18:13 AM"
+    }
+  ]
+}
