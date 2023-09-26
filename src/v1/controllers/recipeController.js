@@ -1,17 +1,16 @@
 const recipeService = require('../services/recipeService');
 
-const getAllRecipes = (req, res) => {
+const getAllRecipes = async (req, res) => {
   try {
-    const allRecipes = recipeService.getAllRecipes();
-    res.send({status: 'OK', data: allRecipes});
+    const allRecipes = await recipeService.getAllRecipes();
+    res.status(200).send({status: 'OK', data: allRecipes});
   } catch(error) {
     res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
   }
 }
 
-const getRecipe = (req, res) => {
-  const recipeId = req.params.id;
-  if (!recipeId) {
+const getRecipe = async (req, res) => {
+  if (!req.params.id) {
     res.status(400).send({
       status: 'BAD_REQUEST',
       data: { message: 'Missing recipeId' }
@@ -19,14 +18,14 @@ const getRecipe = (req, res) => {
     return
   }
   try {
-    const recipe = recipeService.getRecipe(recipeId);
-    res.send({status: 'OK', data: recipe});
+    const recipe = await recipeService.getRecipe(req.params.id);
+    res.status(200).send({status: 'OK', data: recipe});
   } catch(error) {
     res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
   }
 }
 
-const createRecipe = (req, res) => {
+const createRecipe = async (req, res) => {
   if (!req.body.name || !req.body.ingredients || !req.body.instructions) {
     res.status(400).send({
       status: 'BAD_REQUEST',
@@ -39,17 +38,19 @@ const createRecipe = (req, res) => {
   const newRecipe = {
     name: req.body.name,
     ingredients: req.body.ingredients,
-    instructions: req.body.instructions
+    instructions: req.body.instructions,
+    tags: req.body.tags,
+    createdAt: new Date().toLocaleString("en-US", {timeZone: "UTC"}),
   }
   try {
-    const createdRecipe = recipeService.createRecipe(newRecipe);
+    const createdRecipe = await recipeService.createRecipe(newRecipe);
     res.status(201).send({status: 'OK', data: createdRecipe});
   } catch(error) {
     res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
   }
 }
 
-const updateRecipe = (req, res) => {
+const updateRecipe = async (req, res) => {
   if (!req.params.id) {
     res.status(400).send({
       status: 'BAD_REQUEST',
@@ -58,15 +59,14 @@ const updateRecipe = (req, res) => {
     return
   }
   try {
-    const updateRecipe = recipeService.updateRecipe(req.params.id, req.body);
-    res.send({status: 'OK', data: updateRecipe});
+    const updatedRecipe = await recipeService.updateRecipe(req.params.id, req.body);
+    res.status(200).send({status: 'OK', data: updatedRecipe});
   } catch(error) {
     res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
   }
-
 }
 
-const deleteRecipe = (req, res) => {
+const deleteRecipe = async (req, res) => {
   if (!req.params.id) {
     res.status(400).send({
       status: 'BAD_REQUEST',
@@ -75,12 +75,19 @@ const deleteRecipe = (req, res) => {
     return
   }
   try {
-    recipeService.deleteRecipe(req.params.id);
+    await recipeService.deleteRecipe(req.params.id);
     res.status(204).send({status: 'OK'});
   } catch(error) {
     res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
   }
+}
 
+const deleteAllRecipes = async() => {
+  try {
+    await recipeService.deleteAllRecipes()
+  } catch(error) {
+    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
+  }
 }
 
 module.exports = {
@@ -88,5 +95,6 @@ module.exports = {
   getRecipe,
   createRecipe,
   updateRecipe,
-  deleteRecipe
+  deleteRecipe,
+  deleteAllRecipes
 }

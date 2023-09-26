@@ -1,49 +1,59 @@
-const { v4: uuid } = require('uuid')
-const dbRecipes = require('../database/recipe.js');
+const Recipe = require('../models/recipe');
 
-const getAllRecipes = () => {
+const getAllRecipes = async () => {
   try {
-    return dbRecipes.getAllRecipes();
+    return await Recipe.find().exec()
   } catch(error) {
-    throw error;
+    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
   }
 }
 
-const getRecipe = (recipeId) => {
+const getRecipe = async (recipeId) => {
   try {
-    return dbRecipes.getRecipe(recipeId);
+    return await Recipe.findById(recipeId).exec()
   } catch(error) {
-    throw error;
+    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
   }
 }
 
-const createRecipe = (newRecipe) => {
-  const recipeToAdd = {
-    ...newRecipe,
-    id: uuid(),
-    createdAt: new Date().toLocaleString("en-US", {timeZone: "UTC"}),
-    updatedAt: new Date().toLocaleString("en-US", {timeZone: "UTC"}),
-  }
+const createRecipe = async (added) => {
   try {
-    return dbRecipes.createdRecipe(recipeToAdd);
-  } catch(error) {
-    throw error;
-  }
-}
-
-const updateRecipe = (recipeId, update) => {
-  try {
-    return dbRecipes.updateRecipe(recipeId, update);
-  } catch(error) {
-    throw error;
+    const recipeAlreadyExists = Recipe.find({name: added.name});
+    if (recipeAlreadyExists) {
+      throw {
+        status: 400,
+        message: `Recipe with the name '${added.name}' already exists`,
+      };
+    }
+    const newRecipe = new Recipe(added);
+    await newRecipe.save();
+    return newRecipe;
+  } catch (error) {
+    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
   }
 }
 
-const deleteRecipe = (recipeId) => {
+const updateRecipe = async (recipeId, update) => {
   try {
-    dbRecipes.deleteRecipe(recipeId);
+    return await Recipe.findByIdAndUpdate(recipeId, update, {new: true})
   } catch(error) {
-    throw error;
+    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
+  }
+}
+
+const deleteRecipe = async (recipeId) => {
+  try {
+    return await Recipe.findByIdAndRemove(recipeId)
+  } catch(error) {
+    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
+  }
+}
+
+const deleteAllRecipes = async () => {
+  try {
+    return await Recipe.deleteMany({})
+  } catch(error) {
+    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
   }
 }
 
@@ -52,5 +62,6 @@ module.exports = {
   getRecipe,
   createRecipe,
   updateRecipe,
-  deleteRecipe
+  deleteRecipe,
+  deleteAllRecipes
 }
