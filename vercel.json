@@ -1,0 +1,17 @@
+
+{
+  "version": 2,
+  "name": "bento-api",
+  "builds": [
+    {
+      "src": "src/v1/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    { 
+      "src": "/(.*)", 
+      "dest": "src/v1/index.js" 
+    }
+  ]
+}
