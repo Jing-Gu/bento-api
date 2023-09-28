@@ -1,10 +1,9 @@
-require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
-const recipeRoutes = require('./routes/recipeRoutes');
+import express from 'express';
+import bodyParser from 'body-parser';
+import recipeRoutes from './routes/recipeRoutes.js';
+import { connectDB, closeDB } from './models/db.js';
 
-const { connectDB, closeDB } = require('./models/db');
-
+import { NODE_ENV, HOST, PORT } from '../../config.js';
 
 const app = express();
 
@@ -13,11 +12,9 @@ app.use("/api/v1/recipes", recipeRoutes);
 
 const startServer = async () => {
   try {
-
     await connectDB();
-    const PORT = process.env.PORT || 3000;
     const server = app.listen(PORT, () => {
-      console.log(`Server is listening on port ${PORT}`);
+      console.log(`Server is running in ${NODE_ENV} mode on ${HOST}:${PORT}`);
     });
     // Handle server termination gracefully
     process.on('SIGINT', () => {

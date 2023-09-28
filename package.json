@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon src/v1/index.js",
+    "dev": "cross-env NODE_ENV=dev nodemon src/v1/index.js",
+    "prod": "cross-env NODE_ENV=prod nodemon src/v1/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,6 +20,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "nodemon": "^3.0.1"
   }

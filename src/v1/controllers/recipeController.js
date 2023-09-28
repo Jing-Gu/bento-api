@@ -1,4 +1,4 @@
-const recipeService = require('../services/recipeService');
+import recipeService from '../services/recipeService.js';
 
 const getAllRecipes = async (req, res) => {
   try {
@@ -85,12 +85,13 @@ const deleteRecipe = async (req, res) => {
 const deleteAllRecipes = async() => {
   try {
     await recipeService.deleteAllRecipes()
+    res.status(204).send({status: 'OK'});
   } catch(error) {
     res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
   }
 }
 
-module.exports = {
+const recipeController = {
   getAllRecipes,
   getRecipe,
   createRecipe,
@@ -98,3 +99,5 @@ module.exports = {
   deleteRecipe,
   deleteAllRecipes
 }
+
+export default recipeController;

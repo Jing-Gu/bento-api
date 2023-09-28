@@ -1,16 +1,17 @@
-const mongoose = require('mongoose');
-const url = 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.10.6';
+
+import mongoose from 'mongoose';
+import { DB_URL } from '../../../config.js';
 
 const connectDB = () => {
   try {
-   mongoose.connect(url, {
+   mongoose.connect(DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
     // Event listeners for various connection events
     mongoose.connection.on('connected', () => {
-      console.log('Mongoose connected to:', url);
+      console.log('Mongoose connected to:', DB_URL);
     });
 
     mongoose.connection.on('error', (err) => {
@@ -42,4 +43,4 @@ const closeDB = async (msg) => {
   }
 };
 
-module.exports = { connectDB, closeDB };
+export { connectDB, closeDB };

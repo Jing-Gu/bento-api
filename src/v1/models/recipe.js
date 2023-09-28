@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Define the data schema (sub schema)
 const IngredientsSchema = new mongoose.Schema({
@@ -49,4 +49,4 @@ const RecipeSchema = new mongoose.Schema({
 // Compile the schema into a model
 const Recipe = mongoose.model('Recipe', RecipeSchema, 'recipes');
 
-module.exports = Recipe;
+export default Recipe;

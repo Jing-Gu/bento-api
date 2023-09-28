@@ -1,8 +1,8 @@
-const Recipe = require('../models/recipe');
+import Recipe from '../models/recipe.js';
 
 const getAllRecipes = async () => {
   try {
-    return await Recipe.find().exec()
+    return await Recipe.find();
   } catch(error) {
     throw new Error({ status: 500, message: 'db error:' + error?.message || error });
   }
@@ -10,7 +10,7 @@ const getAllRecipes = async () => {
 
 const getRecipe = async (recipeId) => {
   try {
-    return await Recipe.findById(recipeId).exec()
+    return await Recipe.findById(recipeId);
   } catch(error) {
     throw new Error({ status: 500, message: 'db error:' + error?.message || error });
   }
@@ -18,8 +18,8 @@ const getRecipe = async (recipeId) => {
 
 const createRecipe = async (added) => {
   try {
-    const recipeAlreadyExists = Recipe.find({name: added.name});
-    if (recipeAlreadyExists) {
+    const recipeAlreadyExists = await Recipe.find({name: added.name});
+    if (recipeAlreadyExists && recipeAlreadyExists.length > 0) {
       throw {
         status: 400,
         message: `Recipe with the name '${added.name}' already exists`,
@@ -57,7 +57,7 @@ const deleteAllRecipes = async () => {
   }
 }
 
-module.exports = {
+const recipeService = {
   getAllRecipes,
   getRecipe,
   createRecipe,
@@ -65,3 +65,5 @@ module.exports = {
   deleteRecipe,
   deleteAllRecipes
 }
+
+export default recipeService;
