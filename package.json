@@ -4,9 +4,14 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon src/v1/index.js",
     "prod": "cross-env NODE_ENV=prod nodemon src/v1/index.js",
+    "start": "node src/v1/index.js",
+    "build": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
