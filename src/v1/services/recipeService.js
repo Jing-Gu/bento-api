@@ -1,18 +1,24 @@
 import Recipe from '../models/recipe.js';
+import mongoose from 'mongoose';
 
 const getAllRecipes = async () => {
   try {
     return await Recipe.find();
   } catch(error) {
-    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
+    throw 'Failed to retrieve the recipes. Please try again later.';
   }
 }
 
 const getRecipe = async (recipeId) => {
   try {
-    return await Recipe.findById(recipeId);
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      throw 'Recipe not found.';
+    } else {
+      return recipe
+    }
   } catch(error) {
-    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
+    throw error;
   }
 }
 
@@ -20,24 +26,28 @@ const createRecipe = async (added) => {
   try {
     const recipeAlreadyExists = await Recipe.find({name: added.name});
     if (recipeAlreadyExists && recipeAlreadyExists.length > 0) {
-      throw {
-        status: 400,
-        message: `Recipe with the name '${added.name}' already exists`,
-      };
+      throw `Recipe with the name '${added.name}' already exists`;
     }
     const newRecipe = new Recipe(added);
     await newRecipe.save();
     return newRecipe;
   } catch (error) {
-    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
+    throw error;
   }
 }
 
 const updateRecipe = async (recipeId, update) => {
   try {
-    return await Recipe.findByIdAndUpdate(recipeId, update, {new: true})
+    const recipe = await Recipe.findByIdAndUpdate(recipeId, update, {new: true, runValidators: true});
+    if (!recipe) {
+      throw 'Recipe not found.';
+    }
+    return recipe
   } catch(error) {
-    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
+    if (error instanceof mongoose.Error.CastError) {
+      throw new Error(`Recipe with ID ${recipeId} not found.`);
+    }
+    throw error;
   }
 }
 
@@ -45,7 +55,10 @@ const deleteRecipe = async (recipeId) => {
   try {
     return await Recipe.findByIdAndRemove(recipeId)
   } catch(error) {
-    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
+    if (error instanceof mongoose.Error.CastError) {
+      throw new Error(`Unable to delete. Recipe with ID ${recipeId} not found.`);
+    }
+    throw error
   }
 }
 
@@ -53,7 +66,10 @@ const deleteAllRecipes = async () => {
   try {
     return await Recipe.deleteMany({})
   } catch(error) {
-    throw new Error({ status: 500, message: 'db error:' + error?.message || error });
+    if (error.code === 13) { // MongoDB error code for permission denied
+      throw new Error("Permission denied. You are not authorized to delete recipes.");
+    }
+    throw new Error("An error occurred while deleting recipes.");
   }
 }
 

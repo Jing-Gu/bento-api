@@ -4,9 +4,9 @@ import mongoose from 'mongoose';
 const IngredientsSchema = new mongoose.Schema({
   name: {
     type: String,
+    maxLength: 20,
     trim: true,
     required: true,
-    max: 10
   },
   amount: {
     type: Number,
@@ -14,7 +14,6 @@ const IngredientsSchema = new mongoose.Schema({
   },
   unit: {
     type: String,
-    max: 1
   }
 })
 
@@ -22,9 +21,10 @@ const IngredientsSchema = new mongoose.Schema({
 const RecipeSchema = new mongoose.Schema({
   name: {
     type: String,
+    maxLength: 100,
     trim: true,
     required: true,
-    max: 100
+    unique: true,
   },
   ingredients: [IngredientsSchema],
   instructions: {
@@ -33,7 +33,6 @@ const RecipeSchema = new mongoose.Schema({
   tags: [{
     type: String,
     lowercase: true,
-    max: 3
   }],
   createdAt: {
     type: Date,
@@ -42,7 +41,6 @@ const RecipeSchema = new mongoose.Schema({
   },
   updatedAt: {
     type: Date,
-    'default': Date.now,
   }
 });
 

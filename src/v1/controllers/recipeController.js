@@ -59,7 +59,11 @@ const updateRecipe = async (req, res) => {
     return
   }
   try {
-    const updatedRecipe = await recipeService.updateRecipe(req.params.id, req.body);
+    const updated = {
+      ...req.body,
+      updatedAt: new Date().toLocaleString("en-US", {timeZone: "UTC"}),
+    }
+    const updatedRecipe = await recipeService.updateRecipe(req.params.id, updated);
     res.status(200).send({status: 'OK', data: updatedRecipe});
   } catch(error) {
     res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
