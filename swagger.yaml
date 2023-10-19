@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  title: Bento API
+  version: 1.0.0
+  description: REST API made with Express
+  contact:
+    name: Jing Gu
+    email: jinggu0305@gmail.com
+  license:
+    name: MIT
+servers:
+  - url: https://bento-api.onrender.com/api/v1/recipes
+    description: Prod server
+  - url: http://localhost:3000/api/v1/recipes
+    description: Dev server (local mongodb)
+  - url: http://127.0.0.1:8000/api/v1/recipes
+    description: Prod test server (mongodb atlas)
+tags:
+  - name: recipe
+    description: Everything about your recipes
+paths:
+  /recipes:
+    get:
+      tags:
+        - Recipe
+      summary: Get all recipes
+      description: Return a list of all the recipes
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '500':
+          description: Sever error
+components:
+  schemas:
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 65173a4fb1a082038e9cbd96
+        name:
+          type: string
+          maxLength: 20
+          example: Beef
+        amount:
+          type: number
+          minimum: 1
+          example: 2
+        unit:
+          type: string
+          example: kilo
+      required:
+        - id
+        - name
+    Recipe:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 65173a4fb1a082038e9cbd95
+        name:
+          type: string
+          maxLength: 100
+          example: Pot roast
+        ingredients:
+          type: array
+          maxItems: 50
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        instructions:
+          type: string
+          example: wash, chop, cook
+        tags:
+          type: array
+          items:
+            type: string
+          example: [meat, protein, hearty]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - ingredients
+        - instructions

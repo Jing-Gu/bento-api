@@ -17,7 +17,7 @@ const IngredientsSchema = new mongoose.Schema({
   }
 })
 
-// Define the data schema 
+// Define the data schema
 const RecipeSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -26,7 +26,17 @@ const RecipeSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  ingredients: [IngredientsSchema],
+  ingredients: {
+    type: [IngredientsSchema],
+    validate: [
+      {
+        validator: function (array) {
+          return array.length <= 50
+        },
+        message: 'Ingredients array exceeds maximum length of 50 items.'
+      }
+    ]
+  },
   instructions: {
     type: String,
   },

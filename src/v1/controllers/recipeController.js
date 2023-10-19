@@ -1,11 +1,11 @@
-import recipeService from '../services/recipeService.js';
+import recipeService from '../services/recipeService.js'
 
 const getAllRecipes = async (req, res) => {
   try {
-    const allRecipes = await recipeService.getAllRecipes();
-    res.status(200).send({status: 'OK', data: allRecipes});
+    const allRecipes = await recipeService.getAllRecipes()
+    res.status(200).send({status: 'OK', data: allRecipes})
   } catch(error) {
-    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
+    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error})
   }
 }
 
@@ -14,14 +14,14 @@ const getRecipe = async (req, res) => {
     res.status(400).send({
       status: 'BAD_REQUEST',
       data: { message: 'Missing recipeId' }
-    });
+    })
     return
   }
   try {
-    const recipe = await recipeService.getRecipe(req.params.id);
-    res.status(200).send({status: 'OK', data: recipe});
+    const recipe = await recipeService.getRecipe(req.params.id)
+    res.status(200).send({status: 'OK', data: recipe})
   } catch(error) {
-    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
+    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error})
   }
 }
 
@@ -32,7 +32,7 @@ const createRecipe = async (req, res) => {
       data: {
         message: 'Missing one of the required fields: name, ingredients, instructions'
       }
-    });
+    })
     return
   }
   const newRecipe = {
@@ -43,10 +43,10 @@ const createRecipe = async (req, res) => {
     createdAt: new Date().toLocaleString("en-US", {timeZone: "UTC"}),
   }
   try {
-    const createdRecipe = await recipeService.createRecipe(newRecipe);
-    res.status(201).send({status: 'OK', data: createdRecipe});
+    const createdRecipe = await recipeService.createRecipe(newRecipe)
+    res.status(201).send({status: 'OK', data: createdRecipe})
   } catch(error) {
-    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
+    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error})
   }
 }
 
@@ -55,7 +55,7 @@ const updateRecipe = async (req, res) => {
     res.status(400).send({
       status: 'BAD_REQUEST',
       data: { message: 'Missing recipeId' }
-    });
+    })
     return
   }
   try {
@@ -63,10 +63,10 @@ const updateRecipe = async (req, res) => {
       ...req.body,
       updatedAt: new Date().toLocaleString("en-US", {timeZone: "UTC"}),
     }
-    const updatedRecipe = await recipeService.updateRecipe(req.params.id, updated);
-    res.status(200).send({status: 'OK', data: updatedRecipe});
+    const updatedRecipe = await recipeService.updateRecipe(req.params.id, updated)
+    res.status(200).send({status: 'OK', data: updatedRecipe})
   } catch(error) {
-    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
+    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error})
   }
 }
 
@@ -75,23 +75,23 @@ const deleteRecipe = async (req, res) => {
     res.status(400).send({
       status: 'BAD_REQUEST',
       data: { message: 'Missing recipeId' }
-    });
+    })
     return
   }
   try {
-    await recipeService.deleteRecipe(req.params.id);
-    res.status(204).send({status: 'OK'});
+    await recipeService.deleteRecipe(req.params.id)
+    res.status(204).send({status: 'OK'})
   } catch(error) {
-    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
+    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error})
   }
 }
 
 const deleteAllRecipes = async() => {
   try {
     await recipeService.deleteAllRecipes()
-    res.status(204).send({status: 'OK'});
+    res.status(204).send({status: 'OK'})
   } catch(error) {
-    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error});
+    res.status(error.status || 500).send({status: 'ERROR', data: error.message || error})
   }
 }
 
@@ -104,4 +104,4 @@ const recipeController = {
   deleteAllRecipes
 }
 
-export default recipeController;
+export default recipeController

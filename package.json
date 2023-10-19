@@ -12,6 +12,8 @@
     "prod": "cross-env NODE_ENV=prod nodemon src/v1/index.js",
     "start": "node src/v1/index.js",
     "build": "npm install",
+    "mongo:start": "sudo systemctl start mongod",
+    "mongo:stop": "sudo systemctl stop mongod",
     "docker:build": "docker build -t bento-api .",
     "docker:run": "docker run -d -p 8000:8000 bento-api",
     "docker:start": "docker start bento-api",
@@ -23,8 +25,11 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
+    "js-yaml": "^4.1.0",
     "mongodb": "^6.0.0",
     "mongoose": "^7.5.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
