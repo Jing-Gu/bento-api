@@ -16,7 +16,7 @@ servers:
   - url: http://127.0.0.1:8000/api/v1/recipes
     description: Prod test server (mongodb atlas)
 tags:
-  - name: recipe
+  - name: Recipe
     description: Everything about your recipes
 paths:
   /recipes:
@@ -34,6 +34,31 @@ paths:
                 $ref: '#/components/schemas/Recipe'
         '500':
           description: Sever error
+  /recipes/{recipe_id}:
+    get:
+      tags:
+        - Recipe
+      summary: Get a recipe by id
+      description: Return a single recipe
+      operationId: getRecipeById
+      parameters:
+        - name: recipe_id
+          in: path
+          description: id of recipe to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '400':
+          description: Missing recipe id
+        '404':
+          description: Recipe not found
 components:
   schemas:
     Ingredient:
@@ -81,10 +106,10 @@ components:
           example: [meat, protein, hearty]
         createdAt:
           type: string
-          format: date-time
+          format: date
         updatedAt:
           type: string
-          format: date-time
+          format: date
       required:
         - id
         - name

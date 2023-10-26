@@ -8,9 +8,9 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev nodemon src/v1/index.js",
-    "prod": "cross-env NODE_ENV=prod nodemon src/v1/index.js",
-    "start": "node src/v1/index.js",
+    "dev": "cross-env NODE_ENV=dev nodemon src/index.js",
+    "prod": "cross-env NODE_ENV=prod nodemon src/index.js",
+    "start": "node src/index.js",
     "build": "npm install",
     "mongo:start": "sudo systemctl start mongod",
     "mongo:stop": "sudo systemctl stop mongod",
@@ -24,17 +24,18 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "js-yaml": "^4.1.0",
     "mongodb": "^6.0.0",
-    "mongoose": "^7.5.0",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0",
-    "uuid": "^9.0.0"
+    "mongoose": "^7.5.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
-    "nodemon": "^3.0.1"
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   }
 }

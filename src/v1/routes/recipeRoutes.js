@@ -1,7 +1,7 @@
-import express from 'express'
+import { Router } from 'express'
 import recipeController from '../controllers/recipeController.js'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', recipeController.getAllRecipes)
 router.get('/:id', recipeController.getRecipe)
