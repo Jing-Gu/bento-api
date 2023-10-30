@@ -34,6 +34,29 @@ paths:
                 $ref: '#/components/schemas/Recipe'
         '500':
           description: Sever error
+    post:
+      tags:
+        - Recipe
+      summary: Add a new recipe
+      description: Add a new recipe
+      operationId: AddRecipe
+      requestBody:
+        description: Create a new recipe
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '500':
+          description: Sever error
+
   /recipes/{recipe_id}:
     get:
       tags:
@@ -56,9 +79,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/Recipe'
         '400':
-          description: Missing recipe id
+          description: Bad request. Missing recipe id
         '404':
           description: Recipe not found
+    put:
+      tags:
+        - Recipe
+      summary: Update an existing recipe by id
+      # description: Update an existing recipe by id
+      operationId: UpdateRecipeById
+      requestBody:
+        description: Update an existing recipe by id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '400':
+          description: Bad request. Missing recipe id
+        '404':
+          description: Recipe not found
+    delete:
+      tags:
+        - Recipe
+      summary: Delete a recipe
+      description: Delete a recipe by id
+      operationId: deleteRecipeById
+      parameters:
+        - name: recipe_id
+          in: path
+          description: Recipe id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '400':
+          description: Bad request. Missing recipe id
+        '404':
+          description: Recipe not found
+
 components:
   schemas:
     Ingredient:
