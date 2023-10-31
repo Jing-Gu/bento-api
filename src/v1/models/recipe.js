@@ -1,23 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-// Define the data schema (sub schema)
-const IngredientsSchema = new mongoose.Schema({
+const IngredientSchema = new mongoose.Schema({
   name: {
     type: String,
     maxLength: 20,
     trim: true,
-    required: true,
-  },
-  amount: {
-    type: Number,
-    min: 1
-  },
-  unit: {
-    type: String,
+    unique: true
   }
 })
 
-// Define the data schema
+const TagSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    maxLength: 10,
+    trim: true,
+    lowercase: true,
+    unique: true
+  }
+})
+
 const RecipeSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -27,7 +28,20 @@ const RecipeSchema = new mongoose.Schema({
     unique: true,
   },
   ingredients: {
-    type: [IngredientsSchema],
+    type: [{
+      item: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Ingredient',
+      },
+      amount: {
+        type: Number,
+        min: 1
+      },
+      unit: {
+        type: String,
+      },
+    }],
+    required: true,
     validate: [
       {
         validator: function (array) {
@@ -37,13 +51,13 @@ const RecipeSchema = new mongoose.Schema({
       }
     ]
   },
+  tags: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tag',
+  }],
   instructions: {
     type: String,
   },
-  tags: [{
-    type: String,
-    lowercase: true,
-  }],
   createdAt: {
     type: Date,
     'default': Date.now,
@@ -55,6 +69,8 @@ const RecipeSchema = new mongoose.Schema({
 });
 
 // Compile the schema into a model
-const Recipe = mongoose.model('Recipe', RecipeSchema, 'recipes');
+const Recipe = mongoose.model('Recipe', RecipeSchema, 'recipes')
+const Ingredient = mongoose.model('Ingredient', IngredientSchema, 'ingredients')
+const Tag = mongoose.model('Tag', TagSchema, 'tags')
 
-export default Recipe;
+export { Recipe, Ingredient, Tag }
